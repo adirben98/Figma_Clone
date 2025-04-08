@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+
+@import "@liveblocks/react-ui/styles.css";
+/* Base (Light mode) variables */
+:root {
+  --color-primary-black: #14181F;
+  --color-primary-green: #56FFA6;
+  --color-primary-grey-100: #F5F5F5; /* Light version for contrast */
+  --color-primary-grey-200: #E0E0E0;
+  --color-primary-grey-300: #C4D3ED;
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary-black: #14181F;
+    --color-primary-green: #56FFA6;
+    --color-primary-grey-100: #2B303B;
+    --color-primary-grey-200: #202731;
+    --color-primary-grey-300: #C4D3ED;
+  }
+
+  body {
+    background-color: var(--color-primary-grey-100);
+  }
+}
+
+/* Container Styles */
+.container {
+  width: 100%;
+  padding: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* Keyframes */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+/* Animation utility classes */
+.accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
