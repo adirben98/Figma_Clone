@@ -52,6 +52,7 @@ export default function CursorChat({
               maxLength={50}
               onKeyDown={handleKeyDown}
               onChange={handleChange}
+              value={cursorState.message}
             />
           </div>
         </div>
