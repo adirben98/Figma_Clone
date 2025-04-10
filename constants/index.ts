@@ -35,7 +35,7 @@ export const shapeElements = [
 
 export const navElements = [
   {
-    icon: "/assets/select.svg",
+    icon: "./assets/select.svg",
     name: "Select",
     value: "select",
   },

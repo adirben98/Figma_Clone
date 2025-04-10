@@ -30,7 +30,6 @@ export default function CursorChat({
   };
   return (
     <>
-    {console.log(cursorState.mode)}
       {cursorState.mode === CursorMode.Chat && (
         <div
           className="absolute top-0 left-0"
@@ -53,6 +52,7 @@ export default function CursorChat({
               onKeyDown={handleKeyDown}
               onChange={handleChange}
               value={cursorState.message}
+              onKeyUp={(event) => {event.stopPropagation()}}
             />
           </div>
         </div>

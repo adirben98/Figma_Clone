@@ -1,4 +1,5 @@
-import { fabric } from "fabric";
+import  { Canvas, PencilBrush } from "fabric";
+
 import { v4 as uuid4 } from "uuid";
 
 import {
@@ -19,14 +20,18 @@ export const initializeFabric = ({
   fabricRef,
   canvasRef,
 }: {
-  fabricRef: React.MutableRefObject<fabric.Canvas | null>;
-  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+  fabricRef: React.RefObject<Canvas | null>;
+  canvasRef: React.RefObject<HTMLCanvasElement | undefined>;
 }) => {
   // get canvas element
   const canvasElement = document.getElementById("canvas");
+  if (fabricRef.current) {
+    fabricRef.current.dispose();
+    fabricRef.current = null;
+  }
 
   // create fabric canvas
-  const canvas = new fabric.Canvas(canvasRef.current, {
+  const canvas = new Canvas(canvasRef.current, {
     width: canvasElement?.clientWidth,
     height: canvasElement?.clientHeight,
   });
@@ -54,7 +59,7 @@ export const handleCanvasMouseDown = ({
    *
    * findTarget: http://fabricjs.com/docs/fabric.Canvas.html#findTarget
    */
-  const target = canvas.findTarget(options.e, false);
+  const target = canvas.findTarget(options.e);
 
   // set canvas drawing mode to false
   canvas.isDrawingMode = false;
@@ -63,6 +68,10 @@ export const handleCanvasMouseDown = ({
   if (selectedShapeRef.current === "freeform") {
     isDrawing.current = true;
     canvas.isDrawingMode = true;
+
+    if (!canvas.freeDrawingBrush) {
+      canvas.freeDrawingBrush = new PencilBrush(canvas);
+    }
     canvas.freeDrawingBrush.width = 5;
     return;
   }
@@ -236,7 +245,7 @@ export const handlePathCreated = ({
 export const handleCanvasObjectMoving = ({
   options,
 }: {
-  options: fabric.IEvent;
+  options: any;
 }) => {
   // get target object which is moving
   const target = options.target as fabric.Object;
@@ -399,7 +408,7 @@ export const handleCanvasZoom = ({
   options,
   canvas,
 }: {
-  options: fabric.IEvent & { e: WheelEvent };
+  options: any & { e: WheelEvent };
   canvas: fabric.Canvas;
 }) => {
   const delta = options.e?.deltaY;

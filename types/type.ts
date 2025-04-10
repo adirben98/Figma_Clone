@@ -1,5 +1,6 @@
 import { BaseUserMeta, User } from "@liveblocks/client";
 import { Gradient, Pattern } from "fabric/fabric-impl";
+import  { Canvas,Object, Path } from "fabric";
 
 export enum CursorMode {
   Hidden,
@@ -64,44 +65,44 @@ export type ActiveElement = {
   icon: string;
 } | null;
 
-export interface CustomFabricObject<T extends fabric.Object>
-  extends fabric.Object {
+export interface CustomFabricObject<T extends Object>
+  extends Object {
   objectId?: string;
 }
 
 export type ModifyShape = {
-  canvas: fabric.Canvas;
+  canvas: Canvas;
   property: string;
   value: any;
-  activeObjectRef: React.MutableRefObject<fabric.Object | null>;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  activeObjectRef: React.RefObject<Object | null>;
+  syncShapeInStorage: (shape: Object) => void;
 };
 
 export type ElementDirection = {
-  canvas: fabric.Canvas;
+  canvas: Canvas;
   direction: string;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  syncShapeInStorage: (shape: Object) => void;
 };
 
 export type ImageUpload = {
   file: File;
-  canvas: React.MutableRefObject<fabric.Canvas>;
-  shapeRef: React.MutableRefObject<fabric.Object | null>;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  canvas: React.RefObject<Canvas>;
+  shapeRef: React.RefObject<Object | null>;
+  syncShapeInStorage: (shape: Object) => void;
 };
 
 export type RightSidebarProps = {
   elementAttributes: Attributes;
   setElementAttributes: React.Dispatch<React.SetStateAction<Attributes>>;
-  fabricRef: React.RefObject<fabric.Canvas | null>;
-  activeObjectRef: React.RefObject<fabric.Object | null>;
-  isEditingRef: React.MutableRefObject<boolean>;
+  fabricRef: React.RefObject<Canvas | null>;
+  activeObjectRef: React.RefObject<Object | null>;
+  isEditingRef: React.RefObject<boolean>;
   syncShapeInStorage: (obj: any) => void;
 };
 
 export type NavbarProps = {
   activeElement: ActiveElement;
-  imageInputRef: React.MutableRefObject<HTMLInputElement | null>;
+  imageInputRef: React.RefObject<HTMLInputElement | null>;
   handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleActiveElement: (element: ActiveElement) => void;
 };
@@ -125,55 +126,55 @@ export type LiveCursorProps = {
 };
 
 export type CanvasMouseDown = {
-  options: fabric.IEvent;
-  canvas: fabric.Canvas;
+  options: any;
+  canvas: Canvas;
   selectedShapeRef: any;
-  isDrawing: React.MutableRefObject<boolean>;
-  shapeRef: React.MutableRefObject<fabric.Object | null>;
+  isDrawing: React.RefObject<boolean>;
+  shapeRef: React.RefObject<Object | null>;
 };
 
 export type CanvasMouseMove = {
-  options: fabric.IEvent;
-  canvas: fabric.Canvas;
-  isDrawing: React.MutableRefObject<boolean>;
+  options: any;
+  canvas: Canvas;
+  isDrawing: React.RefObject<boolean>;
   selectedShapeRef: any;
   shapeRef: any;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  syncShapeInStorage: (shape: Object) => void;
 };
 
 export type CanvasMouseUp = {
-  canvas: fabric.Canvas;
-  isDrawing: React.MutableRefObject<boolean>;
+  canvas: Canvas;
+  isDrawing: React.RefObject<boolean>;
   shapeRef: any;
-  activeObjectRef: React.MutableRefObject<fabric.Object | null>;
+  activeObjectRef: React.RefObject<Object | null>;
   selectedShapeRef: any;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  syncShapeInStorage: (shape: Object) => void;
   setActiveElement: any;
 };
 
 export type CanvasObjectModified = {
-  options: fabric.IEvent;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  options: any;
+  syncShapeInStorage: (shape: Object) => void;
 };
 
 export type CanvasPathCreated = {
-  options: (fabric.IEvent & { path: CustomFabricObject<fabric.Path> }) | any;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  options: (any & { path: CustomFabricObject<Path> }) | any;
+  syncShapeInStorage: (shape: Object) => void;
 };
 
 export type CanvasSelectionCreated = {
-  options: fabric.IEvent;
-  isEditingRef: React.MutableRefObject<boolean>;
+  options: any;
+  isEditingRef: React.RefObject<boolean>;
   setElementAttributes: React.Dispatch<React.SetStateAction<Attributes>>;
 };
 
 export type CanvasObjectScaling = {
-  options: fabric.IEvent;
+  options: any;
   setElementAttributes: React.Dispatch<React.SetStateAction<Attributes>>;
 };
 
 export type RenderCanvas = {
-  fabricRef: React.MutableRefObject<fabric.Canvas | null>;
+  fabricRef: React.RefObject<Canvas | null>;
   canvasObjects: any;
   activeObjectRef: any;
 };
