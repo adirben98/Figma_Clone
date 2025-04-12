@@ -13,7 +13,7 @@ import useInterval from "@/hooks/useInterval";
 import FlyingReaction from "./reaction/FlyingReaction";
 
 type LiveProp = {
-  canvasRef: React.RefObject<HTMLCanvasElement | undefined>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
 };
 
 export default function Live({ canvasRef }: LiveProp) {
@@ -116,15 +116,19 @@ export default function Live({ canvasRef }: LiveProp) {
 
   return (
     <div
-      id="canvas"
-      className="flex justify-center items-center h-[100vh]"
-      onPointerMove={handlePointerMove}
-      onPointerDown={handlePointerDown}
-      onPointerLeave={handlePointerLeave}
-    >
-      <LiveCursors others={others} />
-      {reactions.map((reaction) => {
-        return (
+    className="relative flex h-full w-full flex-1 items-center justify-center"
+        id="canvas"
+        style={{
+          cursor: cursorState.mode === CursorMode.Chat ? "none" : "auto",
+        }}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onPointerDown={handlePointerDown}
+      >
+        <canvas ref={canvasRef} />
+
+        {/* Render the reactions */}
+        {reactions.map((reaction) => (
           <FlyingReaction
             key={reaction.timestamp.toString()}
             x={reaction.point.x}
@@ -132,28 +136,34 @@ export default function Live({ canvasRef }: LiveProp) {
             timestamp={reaction.timestamp}
             value={reaction.value}
           />
-        );
-      })}
-      {cursor && (
-        <CursorChat
-          cursor={cursor as { x: number; y: number }}
-          cursorState={cursorState}
-          setCursorState={setCursorState}
-          updateMyPresence={updateMyPresence}
-        />
-      )}
-      {cursorState.mode === CursorMode.ReactionSelector && (
-        <ReactionSelector
-          setReaction={(reaction) => {
-            setCursorState({
-              mode: CursorMode.Reaction,
-              reaction,
-              isPressed: false,
-            });
-          }}
-        ></ReactionSelector>
-      )}
-      <canvas ref={canvasRef} />
+        ))}
+
+        {/* If cursor is in chat mode, show the chat cursor */}
+        {cursor && (
+          <CursorChat
+            cursor={cursor}
+            cursorState={cursorState}
+            setCursorState={setCursorState}
+            updateMyPresence={updateMyPresence}
+          />
+        )}
+
+        {/* If cursor is in reaction selector mode, show the reaction selector */}
+        {cursorState.mode === CursorMode.ReactionSelector && (
+          <ReactionSelector
+            setReaction={(reaction) => {
+              setCursorState({
+                mode: CursorMode.Reaction,
+                reaction,
+                isPressed: false,
+              });
+            }}
+          />
+        )}
+
+        {/* Show the live cursors of other users */}
+        <LiveCursors others={others} />
+
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import { fabric } from "fabric";
+import { Canvas, Object, util } from "fabric";
 import { v4 as uuidv4 } from "uuid";
 
 import { CustomFabricObject } from "@/types/type";
 
-export const handleCopy = (canvas: fabric.Canvas) => {
+export const handleCopy = (canvas: Canvas) => {
   const activeObjects = canvas.getActiveObjects();
   if (activeObjects.length > 0) {
     // Serialize the selected objects
@@ -16,10 +16,10 @@ export const handleCopy = (canvas: fabric.Canvas) => {
 };
 
 export const handlePaste = (
-  canvas: fabric.Canvas,
-  syncShapeInStorage: (shape: fabric.Object) => void
+  canvas: Canvas,
+  syncShapeInStorage: (shape: Object) => void
 ) => {
-  if (!canvas || !(canvas instanceof fabric.Canvas)) {
+  if (!canvas || !(canvas instanceof Canvas)) {
     console.error("Invalid canvas object. Aborting paste operation.");
     return;
   }
@@ -30,11 +30,11 @@ export const handlePaste = (
   if (clipboardData) {
     try {
       const parsedObjects = JSON.parse(clipboardData);
-      parsedObjects.forEach((objData: fabric.Object) => {
+      parsedObjects.forEach((objData: Object) => {
         // convert the plain javascript objects retrieved from localStorage into fabricjs objects (deserialization)
-        fabric.util.enlivenObjects(
+        util.enlivenObjects(
           [objData],
-          (enlivenedObjects: fabric.Object[]) => {
+          (enlivenedObjects: Object[]) => {
             enlivenedObjects.forEach((enlivenedObj) => {
               // Offset the pasted objects to avoid overlap with existing objects
               enlivenedObj.set({
@@ -59,7 +59,7 @@ export const handlePaste = (
 };
 
 export const handleDelete = (
-  canvas: fabric.Canvas,
+  canvas: Canvas,
   deleteShapeFromStorage: (id: string) => void
 ) => {
   const activeObjects = canvas.getActiveObjects();
@@ -87,10 +87,10 @@ export const handleKeyDown = ({
   deleteShapeFromStorage,
 }: {
   e: KeyboardEvent;
-  canvas: fabric.Canvas | any;
+  canvas: Canvas | any;
   undo: () => void;
   redo: () => void;
-  syncShapeInStorage: (shape: fabric.Object) => void;
+  syncShapeInStorage: (shape: Object) => void;
   deleteShapeFromStorage: (id: string) => void;
 }) => {
   // Check if the key pressed is ctrl/cmd + c (copy)

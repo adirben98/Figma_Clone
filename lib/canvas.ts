@@ -1,4 +1,4 @@
-import  { Canvas, PencilBrush } from "fabric";
+import  { Canvas, PencilBrush,Object, util } from "fabric";
 
 import { v4 as uuid4 } from "uuid";
 
@@ -51,7 +51,7 @@ export const handleCanvasMouseDown = ({
   shapeRef,
 }: CanvasMouseDown) => {
   // get pointer coordinates
-  const pointer = canvas.getPointer(options.e);
+  const pointer = canvas.getViewportPoint(options.e);
 
   /**
    * get target object i.e., the object that is clicked
@@ -127,7 +127,7 @@ export const handleCanvaseMouseMove = ({
   canvas.isDrawingMode = false;
 
   // get pointer coordinates
-  const pointer = canvas.getPointer(options.e);
+  const pointer = canvas.getViewportPoint(options.e);
 
   // depending on the selected shape, set the dimensions of the shape stored in shapeRef in previous step of handelCanvasMouseDown
   // calculate shape dimensions based on pointer coordinates
@@ -248,10 +248,10 @@ export const handleCanvasObjectMoving = ({
   options: any;
 }) => {
   // get target object which is moving
-  const target = options.target as fabric.Object;
+  const target = options.target as Object;
 
   // target.canvas is the canvas on which the object is moving
-  const canvas = target.canvas as fabric.Canvas;
+  const canvas = target.canvas as Canvas;
 
   // set coordinates of target object
   target.setCoords();
@@ -292,17 +292,17 @@ export const handleCanvasSelectionCreated = ({
   if (!options?.selected) return;
 
   // get the selected element
-  const selectedElement = options?.selected[0] as fabric.Object;
+  const selectedElement = options?.selected[0] as Object;
 
   // if only one element is selected, set element attributes
   if (selectedElement && options.selected.length === 1) {
     // calculate scaled dimensions of the object
     const scaledWidth = selectedElement?.scaleX
-      ? selectedElement?.width! * selectedElement?.scaleX
+      ? selectedElement?.width * selectedElement?.scaleX
       : selectedElement?.width;
 
     const scaledHeight = selectedElement?.scaleY
-      ? selectedElement?.height! * selectedElement?.scaleY
+      ? selectedElement?.height * selectedElement?.scaleY
       : selectedElement?.height;
 
     setElementAttributes({
@@ -329,11 +329,11 @@ export const handleCanvasObjectScaling = ({
 
   // calculate scaled dimensions of the object
   const scaledWidth = selectedElement?.scaleX
-    ? selectedElement?.width! * selectedElement?.scaleX
+    ? selectedElement?.width * selectedElement?.scaleX
     : selectedElement?.width;
 
   const scaledHeight = selectedElement?.scaleY
-    ? selectedElement?.height! * selectedElement?.scaleY
+    ? selectedElement?.height * selectedElement?.scaleY
     : selectedElement?.height;
 
   setElementAttributes((prev) => ({
@@ -343,7 +343,6 @@ export const handleCanvasObjectScaling = ({
   }));
 };
 
-// render canvas objects coming from storage on canvas
 export const renderCanvas = ({
   fabricRef,
   canvasObjects,
@@ -352,46 +351,46 @@ export const renderCanvas = ({
   // clear canvas
   fabricRef.current?.clear();
 
-  // render all objects on canvas
+  // Check if we have objects to render
+  if (!canvasObjects) {
+    return;
+  }
+  
+  
+  // Add debug logging before the Array.from
+  
   Array.from(canvasObjects, ([objectId, objectData]) => {
-    /**
-     * enlivenObjects() is used to render objects on canvas.
-     * It takes two arguments:
-     * 1. objectData: object data to render on canvas
-     * 2. callback: callback function to execute after rendering objects
-     * on canvas
-     *
-     * enlivenObjects: http://fabricjs.com/docs/fabric.util.html#.enlivenObjectEnlivables
-     */
-    fabric.util.enlivenObjects(
-      [objectData],
-      (enlivenedObjects: fabric.Object[]) => {
-        enlivenedObjects.forEach((enlivenedObj) => {
-          // if element is active, keep it in active state so that it can be edited further
-          if (activeObjectRef.current?.objectId === objectId) {
-            fabricRef.current?.setActiveObject(enlivenedObj);
-          }
-
-          // add object to canvas
-          fabricRef.current?.add(enlivenedObj);
+    // Add debug logging for each object
+    
+    try {
+      console.log("About to call enlivenObjects with:", objectData);
+      
+      // Using the new Promise-based API
+      util.enlivenObjects([objectData])
+        .then((enlivenedObjects) => {
+          
+          enlivenedObjects.forEach((enlivenedObj: any) => {
+            
+            // if element is active, keep it in active state
+            if (activeObjectRef.current?.objectId === objectId) {
+              fabricRef.current?.setActiveObject(enlivenedObj);
+            }
+    
+            // add object to canvas
+            fabricRef.current?.add(enlivenedObj);
+          });
+          
+          fabricRef.current?.renderAll();
+        })
+        .catch((error) => {
+          console.error("Error in enlivenObjects:", error);
         });
-      },
-      /**
-       * specify namespace of the object for fabric to render it on canvas
-       * A namespace is a string that is used to identify the type of
-       * object.
-       *
-       * Fabric Namespace: http://fabricjs.com/docs/fabric.html
-       */
-      "fabric"
-    );
-  });
-
-  fabricRef.current?.renderAll();
-};
+    } catch (error) {
+      console.error(`Error setting up enlivenObjects for ${objectId}:`, error);
+  }})}
 
 // resize canvas dimensions on window resize
-export const handleResize = ({ canvas }: { canvas: fabric.Canvas | null }) => {
+export const handleResize = ({ canvas }: { canvas: Canvas | null }) => {
   const canvasElement = document.getElementById("canvas");
   if (!canvasElement) return;
 
@@ -409,7 +408,7 @@ export const handleCanvasZoom = ({
   canvas,
 }: {
   options: any & { e: WheelEvent };
-  canvas: fabric.Canvas;
+  canvas: Canvas;
 }) => {
   const delta = options.e?.deltaY;
   let zoom = canvas.getZoom();
