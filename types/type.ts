@@ -1,5 +1,5 @@
 import { BaseUserMeta, User } from "@liveblocks/client";
-import { Gradient, Pattern } from "fabric/fabric-impl";
+import { Gradient, Pattern } from "fabric";
 import  { Canvas,Object, Path } from "fabric";
 
 export enum CursorMode {

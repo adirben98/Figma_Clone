@@ -39,7 +39,7 @@ const Text = ({
   fontWeight,
   handleInputChange,
 }: TextProps) => (
-  <div className='flex flex-col gap-3 border-b border-primary-grey-200 px-5 py-3'>
+  <div className='flex flex-col gap-3 border-b border-[#202731] px-5 py-3'>
     <h3 className='text-[10px] uppercase'>Text</h3>
 
     <div className='flex flex-col gap-3'>
@@ -96,7 +96,7 @@ const RenderSelect = ({
           : fontWeight
     }
   >
-    <SelectTrigger className='no-ring w-full rounded-sm border border-primary-grey-200'>
+    <SelectTrigger className='outline-none ring-0 ring-offset-0 focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-0 w-full rounded-sm border border-[#202731]'>
       <SelectValue
         placeholder={
           config.property === "fontFamily"
@@ -107,12 +107,12 @@ const RenderSelect = ({
         }
       />
     </SelectTrigger>
-    <SelectContent className='border-primary-grey-200 bg-primary-black text-primary-grey-300'>
+    <SelectContent className='border-[#202731] bg-[#14181f] text-[#c4d3ed]'>
       {config.options.map((option) => (
         <SelectItem
           key={option.value}
           value={option.value}
-          className=' hover:bg-primary-green hover:text-primary-black'
+          className=' hover:bg-[#56ffa6] hover:text-[#14181f]'
         >
           {option.label}
         </SelectItem>

@@ -76,7 +76,7 @@ export default function Live({ canvasRef }: LiveProp) {
     []
   );
   const handlePointerLeave = useCallback(
-    (event: React.PointerEvent<HTMLDivElement>) => {
+    () => {
       setCursorState({ mode: CursorMode.Hidden });
       updateMyPresence({ cursor: null });
     },
@@ -127,7 +127,6 @@ export default function Live({ canvasRef }: LiveProp) {
       >
         <canvas ref={canvasRef} />
 
-        {/* Render the reactions */}
         {reactions.map((reaction) => (
           <FlyingReaction
             key={reaction.timestamp.toString()}
@@ -138,7 +137,6 @@ export default function Live({ canvasRef }: LiveProp) {
           />
         ))}
 
-        {/* If cursor is in chat mode, show the chat cursor */}
         {cursor && (
           <CursorChat
             cursor={cursor}
@@ -148,7 +146,6 @@ export default function Live({ canvasRef }: LiveProp) {
           />
         )}
 
-        {/* If cursor is in reaction selector mode, show the reaction selector */}
         {cursorState.mode === CursorMode.ReactionSelector && (
           <ReactionSelector
             setReaction={(reaction) => {
@@ -161,7 +158,6 @@ export default function Live({ canvasRef }: LiveProp) {
           />
         )}
 
-        {/* Show the live cursors of other users */}
         <LiveCursors others={others} />
 
     </div>

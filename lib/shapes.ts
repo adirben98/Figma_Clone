@@ -99,7 +99,7 @@ export const handleImageUpload = ({
   const reader = new FileReader();
 
   reader.onload = () => {
-    Image.fromURL(reader.result as string, (img) => {
+    Image.fromURL(reader.result as string).then(img => {
       img.scaleToWidth(200);
       img.scaleToHeight(200);
 

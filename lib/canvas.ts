@@ -21,7 +21,7 @@ export const initializeFabric = ({
   canvasRef,
 }: {
   fabricRef: React.RefObject<Canvas | null>;
-  canvasRef: React.RefObject<HTMLCanvasElement | undefined>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
 }) => {
   // get canvas element
   const canvasElement = document.getElementById("canvas");

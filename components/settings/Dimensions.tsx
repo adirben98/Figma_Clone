@@ -9,12 +9,12 @@ const dimensionsOptions = [
 type Props = {
   width: string;
   height: string;
-  isEditingRef: React.MutableRefObject<boolean>;
+  isEditingRef: React.RefObject<boolean>;
   handleInputChange: (property: string, value: string) => void;
 };
 
 const Dimensions = ({ width, height, isEditingRef, handleInputChange }: Props) => (
-  <section className='flex flex-col border-b border-primary-grey-200'>
+  <section className='flex flex-col border-b border-[#202731]'>
     <div className='flex flex-col gap-4 px-6 py-3'>
       {dimensionsOptions.map((item) => (
         <div
@@ -32,7 +32,7 @@ const Dimensions = ({ width, height, isEditingRef, handleInputChange }: Props) =
             className='input-ring'
             min={10}
             onChange={(e) => handleInputChange(item.property, e.target.value)}
-            onBlur={(e) => {
+            onBlur={() => {
               isEditingRef.current = false
             }}
           />
