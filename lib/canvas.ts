@@ -348,22 +348,14 @@ export const renderCanvas = ({
   canvasObjects,
   activeObjectRef,
 }: RenderCanvas) => {
-  // clear canvas
-  fabricRef.current?.clear();
 
-  // Check if we have objects to render
-  if (!canvasObjects) {
-    return;
-  }
   
   
-  // Add debug logging before the Array.from
+  
   
   Array.from(canvasObjects, ([objectId, objectData]) => {
-    // Add debug logging for each object
     
     try {
-      console.log("About to call enlivenObjects with:", objectData);
       
       // Using the new Promise-based API
       util.enlivenObjects([objectData])
