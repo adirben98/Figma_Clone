@@ -28,7 +28,7 @@
 
 ## <a name="introduction">🤖 Introduction</a>
 
-A minimalistic Figma clone to show how to add real-world features like live collaboration with cursor chat, comments, reactions, and drawing designs (shapes, image upload) on the canvas using fabric.js.
+A minimalistic Figma clone to show how to add real-world features like live collaboration with cursor chat, reactions, and drawing designs (shapes, image upload) on the canvas using fabric.js.
 
 
 
@@ -48,7 +48,6 @@ A minimalistic Figma clone to show how to add real-world features like live coll
 
 👉 **Active Users**: Displays a list of currently active users in the collaborative environment, providing visibility into who is currently engaged.
 
-👉 **Comment Bubbles**: Enables users to attach comments to specific elements on the canvas, fostering communication and feedback on design components.
 
 👉 **Creating Different Shapes**: Provides tools for users to generate a variety of shapes on the canvas, allowing for diverse design elements
 
